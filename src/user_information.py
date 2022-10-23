@@ -23,15 +23,20 @@ class UserInfo:
     @staticmethod
     def get_by_id(id):
 
-        sql = """
+        action = """
         SELECT * FROM user.user where id=%s
         """
         conn = UserInfo._get_connection()
         cur = conn.cursor()
-        res = cur.execute(sql, args=id)
-        result = cur.fetchone()
+        cur.execute(action, (id))
+        response = cur.fetchone()
 
-        return result
+        return {'status':200, 'body':{
+                            "id":response['id'],
+                            "name": response['last_name']+' '+response['first_name'],
+                            "email": response['email'],
+                            "message":"login success"
+                    }}
     
     @staticmethod
     def login(email, pw):
@@ -41,7 +46,7 @@ class UserInfo:
         """
         conn = UserInfo._get_connection()
         cur = conn.cursor()
-        cur.execute(action,(pw,email))
+        cur.execute(action,(pw, email))
         response = cur.fetchone()
 
         if response!=None:

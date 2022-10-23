@@ -33,10 +33,7 @@ def get_users_by_id(id):
 
     result = UserInfo.get_by_id(id)
 
-    if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
-    else:
-        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+    rsp = Response(json.dumps(result['body']), status=result['status'], content_type="application.json")
 
     return rsp
 
